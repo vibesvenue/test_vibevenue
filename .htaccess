@@ -1,0 +1,19 @@
+        RewriteEngine On
+        
+        
+        # Handle Authorization Header
+        RewriteCond %{HTTP:Authorization} .
+        RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    
+        # for assets like js, css, pdf, etc.
+        RewriteCond %{REQUEST_URI} !(\.{1}[a-zA-Z]*[\d]*)$ [NC]
+        # for assets like js, css, pdf, etc which is in storage directory.
+        RewriteCond %{REQUEST_URI}% !(/storage/*) [NC]
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-fr
+        RewriteRule ^ index.php [L]
+
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_URI} !^/public/
+        RewriteRule ^(.*)/(.*)$ public/$1/$2 [L,NC]
